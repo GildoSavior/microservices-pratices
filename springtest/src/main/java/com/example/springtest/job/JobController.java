@@ -1,26 +1,39 @@
 package com.example.springtest.job;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.springtest.job.service.IJobService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class JobController {
-    List<Job> jobs = new ArrayList<>();
+
+    private final IJobService jobService;
+
+    public JobController(IJobService jobService) {
+        this.jobService = jobService;
+    }
 
     @GetMapping("/jobs")
-    public List<Job> findAll() {
-        return jobs;
+    public ResponseEntity<List<Job>> findAll() {
+        var jobs = jobService.findAll();
+        return ResponseEntity.ok(jobs);
+
     }
 
 
     @PostMapping("/jobs")
-    public String createJob(@RequestBody Job job) {
-        jobs.add(job);
-        return "Successes";
+    public ResponseEntity<Job> createJob(@RequestBody Job job) {
+        var newJob = jobService.createJob(job);
+        return new ResponseEntity<>(newJob, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/jobs/{jobId}")
+    public ResponseEntity<Job> getJobById(@PathVariable Long jobId){
+        var job = jobService.findById(jobId);
+        return ResponseEntity.ok(job);
     }
 }
