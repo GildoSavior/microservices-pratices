@@ -1,5 +1,7 @@
 package com.example.springtest.job;
 
+import com.example.springtest.company.Company;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,13 +16,22 @@ public class Job {
     private String maxSalary;
     private String location;
 
-    public Job(Long id, String title, String description, String minSalary, String maxSalary, String location) {
+    @JsonIgnore
+    @OneToMany
+    private Company company;
+
+    public Job(Long id, String title, String description, String minSalary, String maxSalary, String location, Company company) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.minSalary = minSalary;
         this.maxSalary = maxSalary;
         this.location = location;
+        this.company = company;
+    }
+
+    public Company getCompany() {
+        return company;
     }
 
     public Long getId() {
@@ -49,6 +60,10 @@ public class Job {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public void setTitle(String title) {
