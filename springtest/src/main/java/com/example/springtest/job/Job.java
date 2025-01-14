@@ -1,6 +1,12 @@
 package com.example.springtest.job;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Jobs")
 public class Job {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String description;

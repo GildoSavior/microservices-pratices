@@ -1,5 +1,6 @@
 package com.example.springtest.job.service;
 
+import com.example.springtest.job.IJobRepository;
 import com.example.springtest.job.Job;
 import org.springframework.stereotype.Service;
 
@@ -9,42 +10,41 @@ import java.util.List;
 @Service
 public class JobService implements IJobService {
 
-    List<Job> jobs = new ArrayList<>();
+    private final IJobRepository jobRepository;
+
+    public JobService(IJobRepository jobRepository) {
+        this.jobRepository = jobRepository;
+    }
 
     @Override
     public List<Job> findAll() {
-        return jobs;
+        return jobRepository.findAll();
     }
 
     @Override
     public Job createJob(Job job) {
-        jobs.add(job);
-        return job;
+        return jobRepository.save(job);
     }
 
     @Override
     public Job findById(Long id) {
-        return (Job) jobs
-                .stream()
-                .map(job -> job.getId().equals(id));
-//                .filter(job -> job.getId().equals(id));
+        return jobRepository.findById(id).orElse(null);
     }
 
     @Override
     public String deleteJobById(Long jobId) {
-        Job job = jobs.stream().filter(x -> x.getId().equals(jobId)).findFirst().orElse(null);
-        jobs.remove(job);
+        jobRepository.deleteById(jobId);
         return "Job Deleted";
     }
 
     @Override
     public Job updateById(Job newJob, Long jobId) {
-        Job job = jobs.stream().filter(x -> x.getId().equals(jobId)).findFirst().orElse(null);
-        assert job != null;
+        Job job = jobRepository.findById(jobId).orElse(null);
+
         job.setDescription(newJob.getDescription());
         job.setLocation(newJob.getLocation());
         job.setTitle(newJob.getTitle());
 
-        return job;
+        return jobRepository.save(job);
     }
 }
