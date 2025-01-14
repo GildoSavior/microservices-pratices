@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class JobService implements IJobService{
+public class JobService implements IJobService {
 
     List<Job> jobs = new ArrayList<>();
 
@@ -28,5 +28,23 @@ public class JobService implements IJobService{
                 .stream()
                 .map(job -> job.getId().equals(id));
 //                .filter(job -> job.getId().equals(id));
+    }
+
+    @Override
+    public String deleteJobById(Long jobId) {
+        Job job = jobs.stream().filter(x -> x.getId().equals(jobId)).findFirst().orElse(null);
+        jobs.remove(job);
+        return "Job Deleted";
+    }
+
+    @Override
+    public Job updateById(Job newJob, Long jobId) {
+        Job job = jobs.stream().filter(x -> x.getId().equals(jobId)).findFirst().orElse(null);
+        assert job != null;
+        job.setDescription(newJob.getDescription());
+        job.setLocation(newJob.getLocation());
+        job.setTitle(newJob.getTitle());
+
+        return job;
     }
 }

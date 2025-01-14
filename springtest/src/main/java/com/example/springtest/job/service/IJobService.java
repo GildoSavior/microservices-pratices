@@ -8,4 +8,6 @@ public interface IJobService {
     List<Job> findAll();
     Job createJob(Job job);
     Job findById(Long id);
+    String deleteJobById(Long jobId);
+    Job updateById(Job job, Long jobId);
 }
