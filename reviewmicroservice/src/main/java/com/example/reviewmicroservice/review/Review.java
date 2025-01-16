@@ -1,10 +1,7 @@
-package com.example.springtest.review;
+package com.example.reviewmicroservice.review;
 
-import com.example.springtest.company.Company;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
-import java.util.List;
 
 @Entity
 @Table(name = "reviews")
@@ -20,19 +17,22 @@ public class Review {
 
     private double rating;
 
-    @JsonIgnore
-    @ManyToOne
-    private Company company;
+    private Long companyId;
+
+    public Review() {
+    }
+
+    public Review(Long id, String title, String description, double rating, Long companyId) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.rating = rating;
+        this.companyId = companyId;
+    }
 
     public Long getId() {
         return id;
     }
-
-    public Company getCompany() {
-        return company;
-    }
-
-
 
     public String getTitle() {
         return title;
@@ -46,6 +46,10 @@ public class Review {
         return rating;
     }
 
+    public Long getCompanyId() {
+        return companyId;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -54,17 +58,15 @@ public class Review {
         this.title = title;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
-
-
     public void setDescription(String description) {
         this.description = description;
     }
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 }

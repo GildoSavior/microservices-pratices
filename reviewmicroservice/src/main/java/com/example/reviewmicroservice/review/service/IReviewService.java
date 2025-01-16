@@ -1,6 +1,6 @@
-package com.example.springtest.review.service;
+package com.example.reviewmicroservice.review.service;
 
-import com.example.springtest.review.Review;
+import com.example.reviewmicroservice.review.Review;
 
 import java.util.List;
 

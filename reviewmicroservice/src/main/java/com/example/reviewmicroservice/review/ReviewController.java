@@ -1,6 +1,6 @@
-package com.example.springtest.review;
+package com.example.reviewmicroservice.review;
 
-import com.example.springtest.review.service.IReviewService;
+import com.example.reviewmicroservice.review.service.IReviewService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

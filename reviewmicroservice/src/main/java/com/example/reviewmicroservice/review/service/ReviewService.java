@@ -1,9 +1,8 @@
-package com.example.springtest.review.service;
+package com.example.reviewmicroservice.review.service;
 
-import com.example.springtest.company.Company;
-import com.example.springtest.company.ICompanyRepository;
-import com.example.springtest.review.IReviewRepository;
-import com.example.springtest.review.Review;
+
+import com.example.reviewmicroservice.review.IReviewRepository;
+import com.example.reviewmicroservice.review.Review;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,11 +11,9 @@ import java.util.List;
 public class ReviewService implements IReviewService {
 
     private final IReviewRepository reviewRepository;
-    private final ICompanyRepository companyRepository;
 
-    public ReviewService(IReviewRepository reviewRepository, ICompanyRepository companyRepository) {
+    public ReviewService(IReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
-        this.companyRepository = companyRepository;
     }
 
     @Override
@@ -38,8 +35,8 @@ public class ReviewService implements IReviewService {
 
     @Override
     public Review create(Long companyId, Review review) {
-        Company company = companyRepository.findById(companyId).orElse(null);
-        review.setCompany(company);
+//        Company company = companyRepository.findById(companyId).orElse(null);
+        review.setCompanyId(companyId);
         return reviewRepository.save(review);
     }
 
@@ -58,9 +55,9 @@ public class ReviewService implements IReviewService {
     @Override
     public void deleteById(Long companyId, Long reviewId) {
         Review review = reviewRepository.findById(reviewId).orElse(null);
-        Company reviewCompany = review.getCompany();
-        reviewCompany.getReviews().remove(review);
-        companyRepository.save(reviewCompany);
+//        Company reviewCompany = review.getCompany();
+//        reviewCompany.getReviews().remove(review);
+//        companyRepository.save(reviewCompany);
         reviewRepository.deleteById(reviewId);
     }
 }

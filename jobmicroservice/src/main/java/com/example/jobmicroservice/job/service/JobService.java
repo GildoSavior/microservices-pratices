@@ -1,11 +1,15 @@
-package com.example.springtest.job.service;
+package com.example.jobmicroservice.job.service;
 
-import com.example.springtest.job.IJobRepository;
-import com.example.springtest.job.Job;
+import com.example.jobmicroservice.job.Job;
+import com.example.jobmicroservice.job.IJobRepository;
+import com.example.jobmicroservice.job.dto.JobWithCompanyDto;
+import com.example.jobmicroservice.job.external.Company;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class JobService implements IJobService {
@@ -17,8 +21,27 @@ public class JobService implements IJobService {
     }
 
     @Override
-    public List<Job> findAll() {
-        return jobRepository.findAll();
+    public List<JobWithCompanyDto> findAll() {
+
+        List<Job> jobs = jobRepository.findAll();
+        List<JobWithCompanyDto> jobWithCompanies  = new ArrayList<>();
+
+        return jobs.stream()
+                .map(this::convertToDto).collect(Collectors.toList());
+
+    }
+
+    private JobWithCompanyDto convertToDto(Job job) {
+
+        RestTemplate restTemplate = new RestTemplate();
+        Company company = restTemplate.getForObject("http://localhost:8081/companies/" + job.getCompanyId(), Company.class);
+
+        JobWithCompanyDto jobWithCompanyDto = new JobWithCompanyDto();
+
+        jobWithCompanyDto.setJob(job);
+        jobWithCompanyDto.setCompany(company);
+
+        return jobWithCompanyDto;
     }
 
     @Override

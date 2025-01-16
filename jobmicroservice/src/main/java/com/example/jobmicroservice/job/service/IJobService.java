@@ -1,11 +1,12 @@
-package com.example.springtest.job.service;
+package com.example.jobmicroservice.job.service;
 
-import com.example.springtest.job.Job;
+import com.example.jobmicroservice.job.Job;
+import com.example.jobmicroservice.job.dto.JobWithCompanyDto;
 
 import java.util.List;
 
 public interface IJobService {
-    List<Job> findAll();
+    List<JobWithCompanyDto> findAll();
     Job createJob(Job job);
     Job findById(Long id);
     String deleteJobById(Long jobId);

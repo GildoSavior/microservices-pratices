@@ -1,11 +1,11 @@
-package com.example.springtest.job;
+package com.example.jobmicroservice.job;
 
-import com.example.springtest.job.service.IJobService;
+import com.example.jobmicroservice.job.dto.JobWithCompanyDto;
+import com.example.jobmicroservice.job.service.IJobService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,7 +19,7 @@ public class JobController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Job>> findAll() {
+    public ResponseEntity<List<JobWithCompanyDto>> findAll() {
         var jobs = jobService.findAll();
         return ResponseEntity.ok(jobs);
     }

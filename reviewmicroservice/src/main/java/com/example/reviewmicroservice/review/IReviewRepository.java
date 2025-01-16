@@ -1,4 +1,4 @@
-package com.example.springtest.review;
+package com.example.reviewmicroservice.review;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
