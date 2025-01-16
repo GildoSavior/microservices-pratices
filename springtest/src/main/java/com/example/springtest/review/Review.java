@@ -32,9 +32,7 @@ public class Review {
         return company;
     }
 
-    public List<Review> getReviews() {
-        return reviews;
-    }
+
 
     public String getTitle() {
         return title;
@@ -60,9 +58,7 @@ public class Review {
         this.company = company;
     }
 
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
+
 
     public void setDescription(String description) {
         this.description = description;

@@ -4,9 +4,11 @@ import com.example.springtest.company.Company;
 import com.example.springtest.company.ICompanyRepository;
 import com.example.springtest.review.IReviewRepository;
 import com.example.springtest.review.Review;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ReviewService implements IReviewService {
 
     private final IReviewRepository reviewRepository;

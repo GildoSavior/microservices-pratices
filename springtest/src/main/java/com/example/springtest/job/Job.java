@@ -17,7 +17,7 @@ public class Job {
     private String location;
 
     @JsonIgnore
-    @OneToMany
+    @ManyToOne
     private Company company;
 
     public Job(Long id, String title, String description, String minSalary, String maxSalary, String location, Company company) {
