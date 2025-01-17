@@ -1,10 +1,10 @@
-package com.example.springtest;
+package com.example.service_reg;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringtestApplicationTests {
+class ServiceRegApplicationTests {
 
 	@Test
 	void contextLoads() {
