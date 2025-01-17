@@ -12,7 +12,7 @@
 	<artifactId>service-reg</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>service-reg</name>
-	<description>Service Register</description>
+	<description>Service Registry</description>
 	<url/>
 	<licenses>
 		<license/>
