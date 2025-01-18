@@ -1,6 +1,6 @@
 package com.example.jobmicroservice.job;
 
-import com.example.jobmicroservice.job.dto.JobWithCompanyDto;
+import com.example.jobmicroservice.job.dto.JobDTO;
 import com.example.jobmicroservice.job.service.IJobService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class JobController {
     }
 
     @GetMapping
-    public ResponseEntity<List<JobWithCompanyDto>> findAll() {
+    public ResponseEntity<List<JobDTO>> findAll() {
         var jobs = jobService.findAll();
         return ResponseEntity.ok(jobs);
     }
@@ -31,7 +31,7 @@ public class JobController {
     }
 
     @GetMapping("/{jobId}")
-    public ResponseEntity<Job> getJobById(@PathVariable Long jobId){
+    public ResponseEntity<JobDTO> getJobById(@PathVariable Long jobId){
         var job = jobService.findById(jobId);
         return ResponseEntity.ok(job);
     }
