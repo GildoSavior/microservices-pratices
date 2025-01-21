@@ -2,8 +2,13 @@ package com.example.jobmicroservice.job.service;
 
 import com.example.jobmicroservice.job.Job;
 import com.example.jobmicroservice.job.IJobRepository;
-import com.example.jobmicroservice.job.dto.JobWithCompanyDto;
+import com.example.jobmicroservice.job.clients.CompanyClient;
+import com.example.jobmicroservice.job.clients.ReviewClient;
+import com.example.jobmicroservice.job.dto.JobDTO;
 import com.example.jobmicroservice.job.external.Company;
+import com.example.jobmicroservice.job.external.Review;
+import com.example.jobmicroservice.job.mapper.JobMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -12,36 +17,39 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class JobService implements IJobService {
+public class   JobService implements IJobService {
+
 
     private final IJobRepository jobRepository;
+    private final CompanyClient  companyClient;
+    private final ReviewClient  reviewClient;
 
-    public JobService(IJobRepository jobRepository) {
+    public JobService(IJobRepository jobRepository, CompanyClient companyClient, ReviewClient reviewClient) {
         this.jobRepository = jobRepository;
+        this.companyClient = companyClient;
+        this.reviewClient = reviewClient;
     }
 
+    @Autowired
+    RestTemplate restTemplate;
+
     @Override
-    public List<JobWithCompanyDto> findAll() {
+    public List<JobDTO> findAll() {
 
         List<Job> jobs = jobRepository.findAll();
-        List<JobWithCompanyDto> jobWithCompanies  = new ArrayList<>();
+        List<JobDTO> jobWithCompanies  = new ArrayList<>();
 
         return jobs.stream()
                 .map(this::convertToDto).collect(Collectors.toList());
 
     }
 
-    private JobWithCompanyDto convertToDto(Job job) {
+    private JobDTO convertToDto(Job job) {
 
-        RestTemplate restTemplate = new RestTemplate();
-        Company company = restTemplate.getForObject("http://localhost:8081/companies/" + job.getCompanyId(), Company.class);
+        Company company = companyClient.getCompany(job.getCompanyId());
+        List<Review> reviews = reviewClient.getReviews(company.getId());
 
-        JobWithCompanyDto jobWithCompanyDto = new JobWithCompanyDto();
-
-        jobWithCompanyDto.setJob(job);
-        jobWithCompanyDto.setCompany(company);
-
-        return jobWithCompanyDto;
+        return JobMapper.mapToJobDto(job,company, reviews);
     }
 
     @Override
@@ -50,8 +58,11 @@ public class JobService implements IJobService {
     }
 
     @Override
-    public Job findById(Long id) {
-        return jobRepository.findById(id).orElse(null);
+    public JobDTO findById(Long id) {
+
+        Job job = jobRepository.findById(id).orElse(null);
+
+        return convertToDto(job);
     }
 
     @Override

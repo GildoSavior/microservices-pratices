@@ -29,7 +29,7 @@ public class ReviewController {
         return ResponseEntity.ok(review);
     }
 
-    @PostMapping
+    @PostMapping("/review")
     public ResponseEntity<Review> addReview(@PathVariable Long companyId, @RequestBody Review review) {
         Review reviewToCreate = reviewService.create(companyId, review);
 
