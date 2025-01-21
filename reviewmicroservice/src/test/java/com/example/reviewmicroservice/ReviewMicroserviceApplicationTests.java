@@ -1,10 +1,10 @@
-package com.example.companymicroservice;
+package com.example.reviewmicroservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CompanymicroserviceApplicationTests {
+class ReviewMicroserviceApplicationTests {
 
 	@Test
 	void contextLoads() {
