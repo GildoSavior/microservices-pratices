@@ -8,6 +8,8 @@ import com.example.jobmicroservice.job.dto.JobDTO;
 import com.example.jobmicroservice.job.external.Company;
 import com.example.jobmicroservice.job.external.Review;
 import com.example.jobmicroservice.job.mapper.JobMapper;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -33,7 +35,10 @@ public class   JobService implements IJobService {
     @Autowired
     RestTemplate restTemplate;
 
+
     @Override
+    @CircuitBreaker(name = "companyBreaker", fallbackMethod = "companyBreakerFallback")
+    @Retry(name = "companyBreaker", fallbackMethod = "companyBreakerFallback")
     public List<JobDTO> findAll() {
 
         List<Job> jobs = jobRepository.findAll();
@@ -42,6 +47,11 @@ public class   JobService implements IJobService {
         return jobs.stream()
                 .map(this::convertToDto).collect(Collectors.toList());
 
+    }
+
+
+    public  List<String> companyBreakerFallback() {
+        Li
     }
 
     private JobDTO convertToDto(Job job) {
