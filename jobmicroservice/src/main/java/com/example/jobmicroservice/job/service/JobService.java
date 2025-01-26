@@ -26,6 +26,8 @@ public class   JobService implements IJobService {
     private final CompanyClient  companyClient;
     private final ReviewClient  reviewClient;
 
+    int attempt = 0;
+
     public JobService(IJobRepository jobRepository, CompanyClient companyClient, ReviewClient reviewClient) {
         this.jobRepository = jobRepository;
         this.companyClient = companyClient;
@@ -51,7 +53,10 @@ public class   JobService implements IJobService {
 
 
     public  List<String> companyBreakerFallback() {
-        Li
+        List<String> list = new ArrayList<>();
+        list.add("Dummy");
+        return list;
+
     }
 
     private JobDTO convertToDto(Job job) {
