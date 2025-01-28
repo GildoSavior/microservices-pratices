@@ -2,7 +2,9 @@ package com.example.companymicroservice.company.service;
 
 import com.example.companymicroservice.company.Company;
 import com.example.companymicroservice.company.ICompanyRepository;
+import com.example.companymicroservice.company.clients.ReviewClient;
 import com.example.companymicroservice.company.dto.ReviewMessage;
+import jakarta.ws.rs.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +13,11 @@ import java.util.List;
 public class CompanyService implements ICompanyService {
 
     private final ICompanyRepository companyRepository;
+    private final ReviewClient reviewClient;
 
-    public CompanyService(ICompanyRepository companyRepository) {
+    public CompanyService(ICompanyRepository companyRepository, ReviewClient reviewClient) {
         this.companyRepository = companyRepository;
+        this.reviewClient = reviewClient;
     }
 
     @Override
@@ -48,6 +52,12 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public void updateCompanyRating(ReviewMessage reviewMessage) {
+
+        Company company = companyRepository.findById(reviewMessage.getCompanyId()).orElseThrow(() -> new NotFoundException("Company not found"));
+
+        double averageRating = reviewClient.getAverageRatingForCompany(company.getId());
+        company.setRating(averageRating);
+        companyRepository.save(company);
 
     }
 }
