@@ -1,5 +1,6 @@
 package com.example.reviewmicroservice.review;
 
+import com.example.reviewmicroservice.review.messaging.ReviewMessageProducer;
 import com.example.reviewmicroservice.review.service.IReviewService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +12,11 @@ import java.util.List;
 public class ReviewController {
 
     private final IReviewService reviewService;
+    private final ReviewMessageProducer reviewMessageProducer;
 
-    public ReviewController(IReviewService reviewService) {
+    public ReviewController(IReviewService reviewService, ReviewMessageProducer reviewMessageProducer) {
         this.reviewService = reviewService;
+        this.reviewMessageProducer = reviewMessageProducer;
     }
 
     @GetMapping("/reviews")
@@ -31,9 +34,16 @@ public class ReviewController {
 
     @PostMapping("/review")
     public ResponseEntity<Review> addReview(@PathVariable Long companyId, @RequestBody Review review) {
-        Review reviewToCreate = reviewService.create(companyId, review);
 
-        return ResponseEntity.ok(review);
+        try {
+            Review reviewToCreate = reviewService.create(companyId, review);
+            reviewMessageProducer.sendMessage(reviewToCreate);
+            return ResponseEntity.ok(review);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+
     }
 
     @PutMapping("/review/{reviewId}")

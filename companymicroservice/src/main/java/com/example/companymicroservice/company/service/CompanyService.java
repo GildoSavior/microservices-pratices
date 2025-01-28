@@ -2,6 +2,7 @@ package com.example.companymicroservice.company.service;
 
 import com.example.companymicroservice.company.Company;
 import com.example.companymicroservice.company.ICompanyRepository;
+import com.example.companymicroservice.company.dto.ReviewMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,5 +44,10 @@ public class CompanyService implements ICompanyService {
     @Override
     public void deleteById(Long companyId) {
         companyRepository.deleteById(companyId);
+    }
+
+    @Override
+    public void updateCompanyRating(ReviewMessage reviewMessage) {
+
     }
 }
